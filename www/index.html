@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <!--
+         Customize this policy to fit your own app's needs. For more guidance, see:
+         https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+         Some notes:
+         * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+         * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+         * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+         * Enable inline JS: add 'unsafe-inline' to default-src
+         -->
+        <head>
+            <title>SafeDCheckLite</title>
+            <meta charset="UTF-8" />
+            <meta name="format-detection" content="telephone=no">
+            <link href="css/themes/default/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" />
+            <link href="css/index.css" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" media="screen and (min-width: 301px) and (max-width: 450px)" href="css/narrow.css" />
+            <link rel="stylesheet" media="screen and (min-width: 451px) and (max-width: 800px)" href="css/wide.css" />
+            <!-- uncoment viewport meta tag, if targeting Android 4.x.x devices -->
+            <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+            <meta id="viewPortId" name="viewport" content="width=device-width; user-scalable=no" />
+            <meta http-equiv="Content-Security-Policy"/>
+            <script src="js/jquery.js" type="text/javascript"></script>
+            <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+            <script type="text/javascript">
+                $(document).on("mobileinit",function() {
+                               $.mobile.autoInitializePage = false;
+                               });
+                </script>
+            
+            <script src="cordova.js" type="text/javascript"></script>
+            <script src="js/jquery.mobile-1.4.5.min.js?version=1" type="text/javascript"></script>
+            <script src="js/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+            <script src="js/DAO.js" type="text/javascript"></script>
+            <script src="js/index.js" type="text/javascript"></script>
+            <script src="js/createQCPDF.js" type="text/javascript"></script>
+            <script src="js/createAuditPDF.js" type="text/javascript"></script>
+            <script src="js/utils.js" type="text/javascript"></script>
+            <script src="js/locationParse.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.addimage.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.cell.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.from_html.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.javascript.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.ie_below_9_shim.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.standard_fonts_metrics.js" type="text/javascript"></script>
+            <script src="js/libs/jspdf.plugin.split_text_to_size.js" type="text/javascript"></script>
+            <script src="js/libs/FileSaver.js" type="text/javascript"></script>
+            <script src="js/libs/Blob.js" type="text/javascript"></script>
+            <script src="js/libs/BlobBuilder.js" type="text/javascript"></script>
+       
+            <script type="text/javascript">
+                app.initialize();
+                </script>
+            <script type="text/javascript">
+                document.write( '<style>#footer{visibility:hidden}@media(min-height:' + ($( window ).height() - 10) + 'px){#footer{visibility:visible}}</style>' );
+                </script>
+        </head>
+    
+    <body>
+        
+        <!-- Login screen -->
+        
+        <div data-role="page" id="login">
+            <div role="main" class="ui-content">
+                <form id="loginform" name="login">
+                <div class="user">
+                    <div class="login-screen-icon">
+                        <img  src="assets/logo_quickcheck_white.png">
+                            </div>
+                    
+                    <div id="username-icon">
+                        <span><img class="username-image" src="assets/icon_profile_white_small.png"></span>
+                    </div>
+                    <div id="username-field">
+                        <span><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="200" type="text" id="username" value="User Name"></span>
+                    </div>
+                    <div id="password-icon">
+                        <span><img src="assets/icon_pw_white.png"></span>
+                    </div>
+                    <div id="password-field">
+                        <span><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off" maxlength="200" type="text" id="password" value="Password"></span>
+                    </div>
+                    <div id="version-field">
+                        Version 2.0.7.2
+                    </div>
+                    <div id="submit-field">
+                        <span><input  type="submit" id="submit" value="Sign In"></span>
+                    </div>
+                </div>
+                </form>
+            </div>
+            
+        </div>
+        
+        <!-- Profile screen -->
+        
+        <div data-role="page" data-dom-cache="true" data-prefetch id="profile">
+            <div data-role="header">
+                <div class="profile-header">
+                    <div id="profileFocus">
+                        <img class="header-image" src="assets/icon_profile.png">
+                            <span class="caption">PROFILE</span>
+                            </div>
+                    <div id="picklistProfile">
+                        <img class="header-image" src="assets/icon_list.png">
+                            <span class="caption">PICK LIST</span>
+                            </div>
+                    <div id="goCheckProfile">
+                        <img class="header-image" src="assets/icon_audit.png">
+                            <span class="caption">GO CHECK</span>
+                            </div>
+                    <div id="quickCaptureProfile">
+                        <img class="header-image" src="assets/icon_quickcapture.png">
+                            <span class="caption">QUICK CAPTURE</span>
+                            </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content">
+                <div id="offlineDiv" class="offline-div">
+                    <div class="offline-image">
+                        <img class="offline-img-style" src="assets/icon_offline_large.png">
+                            <span class="offline-text-large">You are currently OFFLINE.</span>
+                            </div>
+                    <div class="offline-text-small">
+                        <span>-Limited Access to checklists</span>
+                    </div>
+                    <div class="offline-text-small">
+                        <span>-Audit status not shared</span>
+                    </div>
+                    <div class="offline-text-updates">
+                        <span>When you are online you will have full access and updates</span>
+                    </div>
+                </div>
+                <div id="onlineDiv" class="online-div">
+                    <div class="offline-image">
+                        <img class="offline-img-style" src="assets/icon_online_large.png">
+                            <span class="offline-text-large">You are currently ONLINE.</span>
+                            </div>
+                </div>
+                <div  class="name-lob">
+                    <div  class="full-name">
+<!--                        <span id="storedName" class="name-class">Suman Ray</span>-->
+                            <input type="text" size="30" maxlength="30"  placeholder="Name" id="storedName" data-clear-btn="true">
+                    </div>
+                    <div  class="LOB">
+<!--                        <span id="storedLOB" class="lob-class">Line of Business</span>-->
+                            <input type="text" size="30" maxlength="30"  placeholder="Line of Business"  id="storedLOB" data-clear-btn="true">
+                    </div>
+                </div>
+                
+            </div>
+            <div id="PLFooter" class="custom-fixed-footer-PL">
+            
+                <div id="logOff" class="new-PL">
+                    SIGN OUT
+                </div>
+
+            </div>
+        </div>
+        
+        <!--Quick Capture screen-->
+        
+        <div data-prefetch data-dom-cache="true" data-role="page" id="quickCapture">
+            <div data-role="header">
+                <div class="profile-header">
+                    <div id="profileQC">
+                        <img class="header-image" src="assets/icon_profile.png">
+                            <span class="caption">PROFILE</span>
+                            </div>
+                    <div id="picklistQC">
+                        <img class="header-image" src="assets/icon_list.png">
+                            <span class="caption">PICK LIST</span>
+                            </div>
+                    <div id="goCheckQC">
+                        <img class="header-image" src="assets/icon_audit.png">
+                            <span class="caption">GO CHECK</span>
+                            </div>
+                    <div id="quickCaptureFocus">
+                        <img class="header-image" src="assets/icon_quickcapture.png">
+                            <span class="caption">QUICK CAPTURE</span>
+                            </div>
+                </div>
+            </div>
+            <div  role="main" class="ui-content">
+                <div class="capture-main">
+                    <div class="capture-text">
+                        CAPTURE
+                    </div>
+                    <div id="locationDivCapture">
+                        <div class="location-image">
+                            <img class="location-img-style" src="assets/icon_location_large.png">
+                                <span class="location-text-large">LOCATION</span>
+                                </div>
+                    </div>
+                    <div class="quick-capture-middle">
+                        <div id="QCPhotoMiddleDiv" class="quick-capture-middle-col">
+                            <div id="captureNow" class="quick-capture-middle-div">
+                                <img id="qcPhoto" src="assets/icon_photo_large.png">
+                                    <span class="quick-capture-middle-span-photo">PHOTO</span>
+                                    </div>
+                        </div>
+                        <div id="QCNotesMiddleDiv" class="quick-capture-middle-col">
+                            <div id="notesNow" class="quick-capture-middle-div">
+                                <img src="assets/icon_notes_large.png">
+                                    <span class="quick-capture-middle-span-notes">NOTES</span>
+                                    </div>
+                        </div>
+                    </div>
+                    <div id="criticality" class="criticality-class" data-role="tabs">
+                        <div class="criticality-text">CRITICALITY</div>
+                        <div data-role="navbar">
+                            <ul id="criticalityNavBar">
+                                <li><a>High</a></li>
+                                <li><a class="ui-btn-active ui-state-persist">Normal</a></li>
+                                <li><a>Low</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="keys" class="criticality-class" data-role="tabs">
+                    <div class="criticality-text">KEYS</div>
+                    <div  data-role="navbar">
+                        <ul id="keyNavBar">
+                            <li><a>Safety</a></li>
+                            <li><a>Courtesy</a></li>
+                            <li><a>Show</a></li>
+                            <li><a>Efficiency</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div id="quickCaptureFooter" class="custom-fixed-footer-picklist-select">
+                <div class="ui-grid-b"  style="position:relative;margin-top:15px;">
+                    <div class="ui-block-a picklist-footer-div-left-edit-checklist"><img src="assets/quickcapture_clear.png"
+                            id="clearQC" ></img>
+
+                    </div>
+                    <div class="ui-block-b picklist-footer-div-left-edit-checklist"><img src="assets/quickcapture_pdf.png"
+                            id="viewPDF" ></img>
+                    </div>
+                    <div class="ui-block-c picklist-footer-div-left-edit-checklist"><img src="assets/quickcapture_submit.png"
+                            id="sendQC" ></img>
+                    </div>
+                 
+                </div>
+            </div>
+            
+            <div  data-role="popup" data-position-to="window" id="popupQC">
+                <div>
+                    <div align="center" class="qcNotesHeader">Notes</div>
+                    
+                </div>
+                <div><textarea id="QCTextAreaId" class="QCTextArea"></textarea></div>
+                
+                <div align="center"><button id="closeQCNotes">Close</button></div>
+            </div>
+            
+        </div>
+        
+        <!--Location screen-->
+        <div data-prefetch data-dom-cache="true" data-role="page" id="location">
+            <div data-role="header">
+                <div class="container">
+                    <div class="grid_1">
+                        <div id="cancelLocation"  class="cancel-location-class">Cancel</div>
+                    </div>
+                    <div class="grid_2">
+                        <div class="select-location-class">Location</div>
+                    </div>
+                    <div class="grid_1">
+                        <div class="select-location-done" id="locationDone">Done</div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+            <div  role="main" class="ui-content">
+            
+            <div class="search-location-div">
+               <textarea rows="4" data-role="none" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="search-location-div" type="search" id="searchLocations" value="" ></textarea>
+               <img src="assets/icon_clear.png" id="clearLocation" class="clear-location"></img>
+            </div>
+            <div class="search-location-results" id="searchLocationResults">
+            </div>
+            <div id="recentLocationsDiv" class="recent-locations-class">
+                <div class="recent-locations-header">RECENT LOCATIONS</div>
+                <div class="recent-locations-data">
+                    
+                </div>
+            </div>
+           </div>
+            
+<!--            <div id="locationFooter" data-tap-toggle="false" data-role="footer" data-position="fixed">-->
+<!--                <div id="locationDone" class="log-off">-->
+<!--                    Done-->
+<!--                </div>-->
+<!--            </div>-->
+
+        </div>
+        
+        
+        <!--Notes screen-->
+        <div data-prefetch data-dom-cache="true" data-role="page" id="notes">
+            <div data-role="header">
+                <div class="container">
+                    <div class="grid_1">
+                        <div id="cancelNotes"  class="cancel-location-class">Cancel</div>
+                    </div>
+                    <div class="grid_2">
+                        <div class="select-location-class">Notes</div>
+                    </div>
+                    <div class="grid_1">
+                        <div class="select-location-done" id="notesDone">Done</div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+            <div  role="main" class="ui-content">
+                
+                <div class="notes-div">
+                    <textarea rows="10" maxlength="300" data-role="none"  class="search-location-div"  id="notesMainTextArea" ></textarea>
+<!--                    <img src="assets/icon_clear.png" id="clearNotes" class="clear-location"></img>-->
+                </div>
+            </div>
+        </div>
+        
+        <!--Corrective Action screen-->
+        <div data-prefetch data-dom-cache="true" data-role="page" id="correctiveAction">
+            <div data-role="header">
+                <div class="container">
+                    <div class="grid_1">
+                       <div   class="cancel-location-class"></div>
+                    </div>
+                    <div class="grid_2">
+                        <div class="select-CA-class">Corrective Action</div>
+                    </div>
+                    <div class="grid_1">
+                        <div class="select-location-done" id="CADone">Done</div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+            <div  role="main" class="ui-content">
+                
+                <div class="notes-div">
+                    <textarea rows="10" maxlength="300" data-role="none"  class="search-location-div"  id="CATextArea" ></textarea>
+                    <!--                    <img src="assets/icon_clear.png" id="clearNotes" class="clear-location"></img>-->
+                </div>
+            </div>
+        </div>
+       
+       
+       <!--Picklist screen-->
+       
+       <div data-prefetch data-dom-cache="true" data-role="page" id="pickList">
+           <div data-role="header">
+               <div class="profile-header">
+                   <div id="profilePL">
+                       <img class="header-image" src="assets/icon_profile.png">
+                           <span class="caption">PROFILE</span>
+                           </div>
+                   <div id="picklistFocus">
+                       <img class="header-image" src="assets/icon_list.png">
+                           <span class="caption">PICK LIST</span>
+                           </div>
+                   <div id="goCheckPL">
+                       <img class="header-image" src="assets/icon_audit.png">
+                           <span class="caption">GO CHECK</span>
+                           </div>
+                   <div id="quickCapturePL">
+                       <img class="header-image" src="assets/icon_quickcapture.png">
+                           <span class="caption">QUICK CAPTURE</span>
+                           </div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               <div class="reorder-edit-spans" id="">
+                   
+                       <span id="myListsSpan" class="mylists-active">My Lists</span><span class="span-separator">&nbsp;|&nbsp;</span><span id="favoritesSpan" class="favorites-inactive">Favorites</span><span class="span-separator">&nbsp;|&nbsp;</span></span><span id="allListsSpan" class="alllists-inactive">All Lists</span><span id="searchIcon" class="search-icon"><img id="seachImage" src="assets/icon_search.png"></span><span id="filterIcon" class="filter-icon"><img id="filterImage" src="assets/icon_filter_blue.png"></span>
+                   
+               </div>
+               <div class="sort-checklist-div" id="SortPickList">
+                   <div class="sortby-text"><span></span><span id="sortType" class="sort-order"></span></div>
+                   <div class="sort-navbar">
+                   <div id="sortNavBar"  data-role="navbar">
+                   <ul id="sortNavBar">
+                       <li><a id="lobTab">LOB</a></li>
+                       <li><a id="creatorTab">Creator</a></li>
+                       <li><a id="dateTab">Date</a></li>
+                    </ul>
+                   </div>
+                   </div>
+               </div>
+               
+               <div class="search-checklist-div" id="SearchPickList">
+                   <div class="sortby-text"><span>Search for</span></div>
+                   <div  class="search-picklist">
+                   <div class="search-parent">
+                   <div class="search-text"><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  maxlength="200" type="text" id="searchPickList"></div>
+                   <div id="searchSubmit" class="go-text"><span>FIND</span></div>
+                   </div>
+
+                   </div>
+               </div>
+               
+               <div id="checkListindex" class="checklist-index">
+                   
+               </div>
+               
+           </div>
+           <div id="PLFooter" class="custom-fixed-footer-PL">
+               
+               <div id="newPL" class="new-PL">
+                  <img id="newPL" src="assets/picklist_new_checklist.png"><img>
+               </div>
+               
+           </div>
+       </div>
+       
+       
+       
+       <!--Go Audit screen-->
+       
+       <div data-prefetch data-dom-cache="true" data-role="page" id="goAudit">
+           <div data-role="header">
+               <div class="profile-header">
+                   <div id="profileGA">
+                       <img class="header-image" src="assets/icon_profile.png">
+                           <span class="caption">PROFILE</span>
+                           </div>
+                   <div id="picklistGA">
+                       <img class="header-image" src="assets/icon_list.png">
+                           <span class="caption">PICK LIST</span>
+                           </div>
+                   <div id="goCheckFocus">
+                       <img class="header-image" src="assets/icon_audit.png">
+                           <span class="caption">GO CHECK</span>
+                           </div>
+                   <div id="quickCaptureGA">
+                       <img class="header-image" src="assets/icon_quickcapture.png">
+                           <span class="caption">QUICK CAPTURE</span>
+                           </div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               <div class="reorder-edit-spans" id="">
+                   
+                   <span id="searchIconGA" class="search-icon"><img id="seachImageGA" src="assets/icon_search.png"></span><span id="filterIconGA" class="filter-icon"><img id="filterImageGA" src="assets/icon_filter_blue.png"></span>
+                   
+               </div>
+               <div class="sort-audit-div" id="SortAuditPickList">
+                   <div class="sortby-text"><span>SORT BY</span><span id="sortType" class="sort-order"></span></div>
+                   <div class="sort-audit-navbar">
+                       <div id="sortAuditNavBar"  data-role="navbar">
+                           <ul id="sortNavBar">
+                               <li><a id="statusTab">Status</a></li>
+                               <li><a id="locationTab">Location</a></li>
+                               <li><a id="dateAuditTab">Date</a></li>
+                               
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+               
+               <div class="search-audit-div" id="SearchAuditPickList">
+                   <div class="sortby-text"><span>Search for</span></div>
+                   <div  class="search-audit-picklist">
+                       <div class="search-parent">
+                           <div class="search-text"><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  maxlength="200" type="text" id="searchAuditPickList"></div>
+                           <div id="searchSubmitGA" class="go-text"><span>FIND</span></div>
+                       </div>
+                       
+                   </div>
+               </div>
+
+               <div id="auditIndex" class="audit-index">
+                   
+               </div>
+
+           </div>
+           
+       </div>
+       
+       <!--Actual audit screen-->
+       <div data-prefetch data-dom-cache="true" data-role="page" id="startAudit">
+           <div style="custom-fixed-header-audit" id="startAuditHeader">
+               <div id="auditHeader" class="custom-fixed-header-audit">
+                   
+               </div>
+           </div>
+           
+           <div  role="main" class="ui-content">
+               
+           <div class="audit-questions-answers-details-hidden" id="auditQuestionAnswers"></div>
+           
+               
+               
+               
+           </div>
+           
+           <div id="auditFooter" class="custom-fixed-footer-picklist-select">
+               <div class="ui-grid-b"  style="position:relative;margin-top:10px;">
+                   <div class="ui-block-a picklist-footer-div-left-edit-checklist"><img src="assets/startaudit_close.png"
+                       id="pauseAudit" ></img>
+                   
+                   </div>
+<!--                   <div class="ui-block-b start-audit-footer-div-center">-->
+<!--                       <div id="audit-display-table">-->
+<!--                       <span id="completeAuditSpan" class="complete-span-selected">Show All</span><span id="incompleteAuditSpan" class="incomplete-span-unselected">Incomplete Only</span>-->
+<!--                       </div>-->
+                    <div class="ui-block-b picklist-footer-div-left-edit-checklist"><img src="assets/quickcapture_pdf.png"
+                            id="viewAuditPDF" ></img>
+                    </div>
+<!--                   </div>-->
+                   <div class="ui-block-c picklist-footer-div-left-edit-checklist"><img src="assets/startaudit_submit.png"
+                       id="sendAuditPDF" ></img>
+                   </div>
+                   
+               </div>
+           </div>
+           
+       </div>
+
+       
+       
+       
+       
+        <!--Checklist Details screen-->
+        <div data-prefetch data-dom-cache="true" data-role="page" id="checklistDetails">
+            <div data-role="header">
+                <div class="container">
+                    <div class="grid_1">
+                        <div id="cancelCheckListDetails"  class="checklist-details-back-class"><img src="assets/back_icon.png"><img></div>
+                    </div>
+                    <div class="grid_2">
+                        <div class="edit-checklist-details-class">Checklist Details</div>
+                    </div>
+                    <div class="grid_1">
+                        <div class="select-location-done" id="editChecklistDetails">Edit</div>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+            <div  role="main" class="ui-content">
+                <div id="checklistDetailsName" class="check-list-name-details-text"></div>
+                <div id="shareButton" class="share-checklist-text">Share</div>
+                
+                <div class="check-list-description-details-text" id="checklistDetailsDescription"></div>
+               
+               
+                <div id="staticQuestionsAnswersDetails" class="static-questions-answers-details"></div>
+             </div>
+                
+            <div id="pickListFooter" class="custom-fixed-footer-picklist-details">
+                
+                <div class="ui-grid-solo">
+                    <div id="addLocationDetails" class="ui-block-a location-details"><div class="location-details-text">Add Location</div></div>
+                </div>
+                <div class="ui-grid-a">
+                    <div id="checkLater" class="ui-block-a check-later-details"><div class="location-details-text">Check Later</div></div>
+                    <div id="checkNow" class="ui-block-b check-now-details"><div class="location-details-text">Check Now</div></div>
+                </div>
+                
+                
+
+            </div>
+        </div>
+
+
+<!--Shared Checklist Details screen-->
+<div data-prefetch data-dom-cache="true" data-role="page" id="sharedChecklistDetails">
+    <div data-role="header">
+        <div class="container">
+            <div class="grid_1">
+                <div id="cancelSharedCheckListDetails"  class="checklist-details-back-class"><img src="assets/back_icon.png"><img></div>
+            </div>
+            <div class="grid_2">
+                <div class="edit-checklist-details-class">Checklist Details</div>
+            </div>
+            <div class="grid_1">
+                <div class="select-location-done" id="editChecklistDetailsXXXX"></div>
+            </div>
+            <div class="clear">&nbsp;</div>
+        </div>
+    </div>
+    <div  role="main" class="ui-content">
+        <div id="sharedChecklistDetailsName" class="check-list-name-details-text"></div>
+        
+        
+        <div class="check-list-description-details-text" id="sharedChecklistDetailsDescription"></div>
+        
+        
+        <div id="staticSharedQuestionsAnswersDetails" class="static-questions-answers-details-shared"></div>
+    </div>
+    <input type="hidden" id="sharedPickListId">
+    <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+        <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+            <div class="ui-grid-a"  style="position:relative;margin-top:15px;">
+                <div  class="ui-block-a picklist-footer-div-left-edit-checklist"><img
+                    src="assets/edit_checklist_delete.png" id="deleteSharedPickList" >  </img>
+                </div>
+                <div class="ui-block-b picklist-footer-div-left-edit-checklist"><img src="assets/checklist_details_add_mylist.png"
+                    id="copySharedPickList"></img>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+       <!--Edit Checklist screen-->
+       
+       <div data-prefetch data-dom-cache="true" data-role="page" id="editCheckList">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelCheckList"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="edit-checklist-class">Edit Checklist</div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="checkListDone">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               <div class="check-list-name-text">Checklist Name:</div>
+                <div class="checklist-name-div">
+                    <textarea style="display:block;width: 100%;font-size:14px;" data-role="none" maxlength="100" id="CheckListTextAreaName"></textarea>
+                </div>
+                <div class="check-list-name-text">Description:</div>
+                <div class="checklist-description-div">
+                    <textarea style="display:block;width: 100%;font-size:14px;" data-role="none" rows="2" maxlength="200" id="CheckListTextAreaDescription"></textarea>
+                </div>
+               <input type="hidden" id="checkListDisplay" value="new">
+               <div id="staticQuestionsSections" class="static-questions-sections"></div>
+           </div>
+           <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+               
+               <div class="ui-grid-c"  style="position:relative;margin-top:15px;">
+                   <div  class="ui-block-a picklist-footer-div-left-edit-checklist"><img src="assets/edit_checklist_delete.png"
+                       id="deletePL" > </img>
+                   </div>
+                   <div class="ui-block-b picklist-footer-div-left-edit-checklist"><img src="assets/edit_checklist_add_section.png"
+                       id="addSection"></img>
+                   </div>
+                   <div class="ui-block-c picklist-footer-div-left-edit-checklist"><img src="assets/edit_checklist_add_question.png" id="addQuestion"></img>
+                   </div>
+                   <div class="ui-block-d picklist-footer-div-left-edit-checklist"><img src="assets/edit_checklist_reorder.png" id="reorderQuestion"></img>
+                   </div>
+               </div>
+           </div>
+       </div>
+       
+       
+       
+       
+       
+       
+       <!--Edit Checklist question screen-->
+       
+       <div data-prefetch data-dom-cache="true" data-role="page" id="editCheckListQuestion">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelCheckListQuestion"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="edit-checklist-class">Edit Question </div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="doneCheckListQuestion">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+             
+               <div class="checklist-name-div">
+                   <textarea class="checklist-textarea-name" data-role="none" maxlength="200" id="CheckListTextAreaQuestion"></textarea>
+               </div>
+                <div class="linked-sub-question" id="linkedSubQuestion">Linked with conditional question</div>
+               <input type="hidden" id="questionDisplay" value="new">
+               <div class="quick-capture-middle">
+                   <div id="questionPhotoDiv" class="quick-capture-middle-col-question">
+                       <div class="quick-capture-middle-div-question">
+                           <img class="location-img-style" src="assets/icon_photo_medium_small.png">
+                               <span id="question-photo-text" class="question-text-large">Photo</span>
+                               <input type="hidden" id="question-photo-value" value="inactive">
+                               </div>
+                   </div>
+                   <div id="questionNotesDiv" class="quick-capture-middle-col-question">
+                       <div class="quick-capture-middle-div-question">
+                           <img class="location-img-style" src="assets/icon_notes_medium_small.png">
+                               <span id="question-notes-text" class="question-text-large">Notes</span>
+                               <input type="hidden" id="question-notes-value" value="inactive">
+                               </div>
+                   </div>
+               </div>
+               
+               <div class="question-type-class" id="questionType">
+                    <label>
+                       <input type="radio" name="answerType" id="yesNO">
+                           <div style="float:right;font-size:9px; color:#808080">Corrective Action</div>
+                           <table  class="answer-table" id="YNTable">
+                               <tr>
+                               <td class="answer-style-yes-no">Yes</td>
+                               <td id="CAYes" class="corrective-action-yes-no"></td>
+                               </tr>
+                               <tr>
+                               <td class="answer-style-yes-no">No</td>
+                               <td id="CANo" class="corrective-action-yes-no"></td>
+                               </tr>
+                               <tr>
+                               <td class="answer-style-yes-no">N/A</td>
+                               <td id="CANA" class="corrective-action-yes-no"></td>
+                               </tr>
+                              
+                           </table>
+                    </label>
+                    <label>
+                       <input type="radio" name="answerType" id="multipleChoice">
+                           <div style="float:right;font-size:9px; color:#808080">Corrective Action</div>
+                           <table  class="answer-table" id="answerTable">
+                                <tr>
+                                    <td id="Answer1" class="answer-style">Answer1</td>
+                                    <td id="CA1" class="corrective-action-style"></td>
+                                </tr>
+                                <tr>
+                                    <td id="Answer2" class="answer-style">Answer2</td>
+                                    <td id="CA2" class="corrective-action-style"></td>
+                                </tr>
+                                <tr>
+                                    <td id="Answer3" class="answer-style">Answer3</td>
+                                    <td id="CA3" class="corrective-action-style"></td>
+                                </tr>
+                                <tr>
+                                    <td id="Answer4" class="answer-style">Answer4</td>
+                                    <td id="CA4" class="corrective-action-style"></td>
+                                </tr>
+                                <tr>
+                                    <td id="Answer5" class="answer-style">Answer5</td>
+                                    <td id="CA5" class="corrective-action-style"></td>
+                                </tr>
+                               </table>
+
+                   </label>
+               </div>
+<!--               <div class="info-container">-->
+<!--                    <span>C A implies Corrective Action</span>-->
+<!--               </div>-->
+
+           </div>
+           <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+               
+               
+               <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+
+                <div class="ui-grid-a"  style="position:relative;margin-top:15px;">
+                    <div  class="ui-block-a picklist-footer-div-left-edit-checklist"><img
+                       src="assets/edit_checklist_delete.png" id="deletePLQuestion" >  </img>
+                    </div>
+                    <div class="ui-block-b picklist-footer-div-left-edit-checklist"><img src="assets/edit_question_add_conditionalquestion.png"
+                        id="addSubQuestion"></img>
+                </div>
+    
+            </div>
+        </div>
+               
+            </div>
+       </div>
+       
+       
+       <!-------------   ---->
+       <div data-prefetch data-dom-cache="true" data-role="page" id="editCheckListSubQuestion">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelCheckListSubQuestion"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="create-condition-class">Edit Sub Question</div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="doneCheckListSubQuestion">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               
+               <div class="checklist-name-div">
+                   <textarea class="checklist-textarea-name" data-role="none" maxlength="200" id="CheckListTextAreaSubQuestion"></textarea>
+               </div>
+               
+              
+                   <div class="quick-capture-middle">
+                       <div id="questionPhotoDivSub" class="quick-capture-middle-col-question">
+                           <div class="quick-capture-middle-div-question">
+                               <img class="location-img-style" src="assets/icon_photo_medium_small.png">
+                                   <span id="question-photo-text-sub" class="question-text-large">Photo</span>
+                                   <input type="hidden" id="question-photo-value-sub" value="inactive">
+                                       </div>
+                       </div>
+                       <div id="questionNotesDivSub" class="quick-capture-middle-col-question">
+                           <div class="quick-capture-middle-div-question">
+                               <img class="location-img-style" src="assets/icon_notes_medium_small.png">
+                                   <span id="question-notes-text-sub" class="question-text-large">Notes</span>
+                                   <input type="hidden" id="question-notes-value-sub" value="inactive">
+                                       </div>
+                       </div>
+                   </div>
+                   
+                   <div class="question-type-class" id="subQuestionType">
+                       <label>
+                           <input type="radio" name="answerTypeSub" id="yesNOSub">
+                               <div style="float:right;font-size:9px; color:#808080">Corrective Action</div>
+                               <table  class="answer-table" id="YNTableSub">
+                                   <tr>
+                                       <td class="answer-style-yes-no">Yes</td>
+                                       <td id="CAYesSub" class="corrective-action-yes-no"></td>
+                                   </tr>
+                                   <tr>
+                                       <td class="answer-style-yes-no">No</td>
+                                       <td id="CANoSub" class="corrective-action-yes-no"></td>
+                                   </tr>
+                                   <tr>
+                                       <td class="answer-style-yes-no">N/A</td>
+                                       <td id="CANASub" class="corrective-action-yes-no"></td>
+                                   </tr>
+                                   
+                               </table>
+                               </label>
+                       <label>
+                           <input type="radio" name="answerTypeSub" id="multipleChoiceSub">
+                               <div style="float:right;font-size:9px; color:#808080">Corrective Action</div>
+                               <table  class="answer-table" id="answerTableSub">
+                                   <tr>
+                                       <td id="Answer1Sub" class="answer-style">Answer1</td>
+                                       <td id="CASub1" class="corrective-action-style"></td>
+                                   </tr>
+                                   <tr>
+                                       <td id="Answer2Sub" class="answer-style">Answer2</td>
+                                       <td id="CASub2" class="corrective-action-style"></td>
+                                   </tr>
+                                   <tr>
+                                       <td id="Answer3Sub" class="answer-style">Answer3</td>
+                                       <td id="CASub3" class="corrective-action-style"></td>
+                                   </tr>
+                                   <tr>
+                                       <td id="Answer4Sub" class="answer-style">Answer4</td>
+                                       <td id="CASub4" class="corrective-action-style"></td>
+                                   </tr>
+                                   <tr>
+                                       <td id="Answer5Sub" class="answer-style">Answer5</td>
+                                       <td id="CASub5" class="corrective-action-style"></td>
+                                   </tr>
+                               </table>
+                               
+                               </label>
+                   </div>
+                   <!--               <div class="info-container">-->
+                   <!--                    <span>C A implies Corrective Action</span>-->
+                   <!--               </div>-->
+                   
+                   </div>
+           <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+               
+               
+               <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+                   
+                   <div class="ui-grid-a"  style="position:relative;margin-top:15px;">
+                       <div  class="ui-block-a picklist-footer-div-left-edit-checklist"><img
+                           src="assets/edit_checklist_delete.png" id="deletePLSubQuestion" >  </img>
+                       </div>
+                      
+                       
+                   </div>
+               </div>
+               
+           </div>
+       </div>
+
+       <!-------------   ---->
+       
+       
+       <!--CheckList Answer screen-->
+       <div data-prefetch data-dom-cache="true" data-role="page" id="editCheckListAnswer">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelAnswer"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="select-location-class">Answer</div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="answerDone">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               
+               <div class="notes-div">
+                   <textarea rows="10" data-role="none"  class="search-location-div"  id="answerMainTextArea"></textarea>
+                   <!--                    <img src="assets/icon_clear.png" id="clearNotes" class="clear-location"></img>-->
+               </div>
+           </div>
+       </div>
+       
+       <!--CheckList Reorder screen-->
+       <div data-prefetch data-dom-cache="true" data-role="page" id="reorderQuestions">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelReorder"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="select-location-class">Reorder</div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="reorderDone">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               <div class="reorder-edit-spans">
+                   <span id="reorderSectionSpan" class="reorder-section-inactive">Sections</span><span class="span-separator">&nbsp;|&nbsp;</span><span id="reorderSpan" class="reorder-active">Questions</span><span class="span-separator">&nbsp;|&nbsp;<span id="reorderSubQuestionsSpan" class="reorder-sub-inactive">Conditional Questions</span>
+                </div>
+               
+               <div id="questionsSectionsDiv" class="questions-sections-div"></div>
+               <div id="sectionsOnlyDiv" class="sections-only-div"></div>
+               <div id="subQuestionsOnlyDiv" class="sub-questions-only-div"></div>
+           </div>
+       </div>
+       
+       <!--CheckList Section screen-->
+       <div data-prefetch data-dom-cache="true" data-role="page" id="addSectionScreen">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelSection"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="edit-checklist-section-class">Edit Section</div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="sectionDone">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               
+               <div class="notes-div">
+                   <textarea rows="2" data-role="none"  class="search-location-div"  id="sectionTextArea"></textarea>
+                   <!--                    <img src="assets/icon_clear.png" id="clearNotes" class="clear-location"></img>-->
+               </div>
+               <input type="hidden" value="new" id="sectionDisplay">
+           </div>
+           
+           <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+               <div class="section-delete-div">
+                   <img id="deleteSection" src="assets/edit_checklist_delete.png"><img>
+               </div>
+           </div>
+       </div>
+       
+       
+       
+       <!--Sub question  screen-->
+       <div data-prefetch data-dom-cache="true" data-role="page" id="addSubQuestionScreen">
+           <div data-role="header">
+               <div class="container">
+                   <div class="grid_1">
+                       <div id="cancelSubQuestion"  class="cancel-location-class">Cancel</div>
+                   </div>
+                   <div class="grid_2">
+                       <div class="create-condition-class">Create Condition</div>
+                   </div>
+                   <div class="grid_1">
+                       <div class="select-location-done" id="subQuestionDone">Done</div>
+                   </div>
+                   <div class="clear">&nbsp;</div>
+               </div>
+           </div>
+           <div  role="main" class="ui-content">
+               
+               <div class="check-list-name-text">Question:</div>
+               <div class="checklist-name-div">
+                   <textarea readonly class="checklist-textarea-name" data-role="none" maxlength="200" id="checkListTextAreaSubQuestion"></textarea>
+               </div>
+               <div class="sub-question-response-text">If response is</div>
+               <div class="sub-question-response">
+                   <select class="select-response-class" name="select-response" id="selectResponse" data-role="none" data-mini="true">
+                       
+                    </select>
+               </div>
+               <div>&nbsp;</div>
+               <div class="sub-question-response-text">Then display</div>
+               <div>&nbsp;</div>
+               <div id="conditionalQuestionsDiv" class="condition-questions-div">
+                   
+               </div>
+           <input type="hidden" value="new" id="conditionDisplay">
+           <div id="pickListFooter" class="custom-fixed-footer-picklist-select">
+               <div class="section-delete-div">
+                   <span id="deleteSubQuestion" class="">Delete</span>
+               </div>
+           </div>
+       </div>
+
+       
+        
+    </body>
+</html>
